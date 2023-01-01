@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -18,7 +19,7 @@ mongoose.set('strictQuery', true); //for checking models query
 
 //database connection
 //const uri2 = "mongodb://localhost:27017/myDatabase"
-const uri = "mongodb+srv://shrisin:traveldetails@panel.to1qhw9.mongodb.net/?retryWrites=true&w=majority";
+const uri = process.env.DATABASE_URL;
 mongoose.connect(uri, { useNewUrlParser: true });
 
 const connection = mongoose.connection;

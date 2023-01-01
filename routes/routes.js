@@ -3,6 +3,7 @@ const Query= require('../model/model');
 const router = express.Router()
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 
 
@@ -10,8 +11,8 @@ const send_email = async() => {
     let mailTransporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'saurav.8448619415@ipu.ac.in',
-            pass: 'thjuxulrzlfowjmh'            
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASSWORD            
         }
     });
       
@@ -22,7 +23,7 @@ const send_email = async() => {
     //   console.log(lastDocument.name);
       // do something with the documents, like send an email
       let mailDetails = {
-        from: 'saurav.8448619415@ipu.ac.in',
+        from: process.env.GMAIL_USER,
         to: 'sauravshriwastavaa@gmail.com', 
         subject: 'Queries-Metropolitan Design',
         text: 'Test',
