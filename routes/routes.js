@@ -2,17 +2,83 @@ const express = require('express');
 const Query= require('../model/model');
 const router = express.Router()
 const cors = require('cors');
+const nodemailer = require('nodemailer');
+
+
+
+const send_email = async() => {
+    let mailTransporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'saurav.8448619415@ipu.ac.in',
+            pass: 'thjuxulrzlfowjmh'            
+        }
+    });
+      
+    try {
+      const documents = await Query.find();
+      const lastDocument = documents[documents.length - 1];
+    //   console.log(documents);
+    //   console.log(lastDocument.name);
+      // do something with the documents, like send an email
+      let mailDetails = {
+        from: 'saurav.8448619415@ipu.ac.in',
+        to: 'sauravshriwastavaa@gmail.com', 
+        subject: 'Queries-Metropolitan Design',
+        text: 'Test',
+        html:  `<h1>Dear Metropolitan Design,
+                ${lastDocument.name} requested the following queries  </h1>
+                <></>
+            <table>
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Your Query</th>
+                    <th>Whence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>${lastDocument.name}</td>
+                    <td>${lastDocument.phone}</td>
+                    <td>${lastDocument.email}/td>
+                    <td>${lastDocument.your_query}</td>
+                    <td>${lastDocument.whence}</td>
+                    </tr>
+                </tbody>
+            </table>`
+      };
+    
+    mailTransporter.sendMail(mailDetails, function(err, data){
+        if(err) {
+            console.log("Error", err)
+        }
+    })
+
+    console.log("Email Sent")
+    
+    } catch (error) {
+      console.error(error);
+    }
+
+ 
+  }
+
 
 const query = async (req, res) => {
     const {name, phone, email, your_query, whence} = req.body;
         try{
-            Query.create({   
+            await Query.create({   
                 name,
                 phone,
                 email,
                 your_query,
                 whence,
             })
+
+            await send_email();
             res.send({status: 200, message: "Query Sent Sucessfully"});
         }
     
@@ -25,13 +91,5 @@ const query = async (req, res) => {
 
 router.post('/query', query);
 
-
-router.get('/a', (req, res)=> {
-    res.send("Asf")
-})
-
-router.get('/av', (req, res)=> {
-    res.send("Asadsf")
-})
 
 module.exports = router;
