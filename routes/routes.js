@@ -1,7 +1,8 @@
 const express = require('express');
-const Query= require('../model/model');
+const {Career, Query}= require('../model/model');
 const router = express.Router()
 const cors = require('cors');
+const multer = require('multer');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
@@ -92,6 +93,45 @@ const query = async (req, res) => {
 }  
 
 router.post('/query', query);
+
+
+//career section
+
+
+
+const storage = multer.memoryStorage();
+const upload = multer({ 
+    storage: storage, 
+    limits: {
+      fileSize: 1024 * 1024 * 1/2, // 500 kB
+      files: 1,
+    },
+  });
+
+router.post('/careers', upload.single('cv'), (req, res) => {
+  const cv = req.file;
+  const careerData = req.body;
+
+  const newCareer = new Career({
+    first_name: careerData.first_name,
+    last_name: careerData.last_name,
+    email: careerData.email,
+    position: careerData.position,
+    additional_information: careerData.additional_information,
+    cv: cv.buffer,
+    cv_filename: cv.originalname,
+  });
+
+  newCareer.save((error) => {
+    if (error) {
+      res.status(500).send(error);
+    } else {
+        console.log('work')
+      res.status(200).send('CV uploaded successfully!');
+    }
+  });
+});
+
 
 
 module.exports = router;
