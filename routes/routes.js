@@ -24,33 +24,34 @@ const send_email = async() => {
       // do something with the documents, like send an email
       let mailDetails = {
         from: process.env.GMAIL_USER,
-        to: 'sauravshriwastavaa@gmail.com', 
+        to: 'sauravshriwastavaa@gmail.com, meetmemukeshydv@gmail.com, metropolitandesign20@gmail.com, yadavrashindra67890@gmail.com',
         subject: 'Queries-Metropolitan Design',
         text: 'Test',
         html:  `<h1>Dear Metropolitan Design,
                 ${lastDocument.name} requested the following queries  </h1>
                 <></>
-            <table>
+            <table style="border-collapse: collapse; width: 100%;">
                 <thead>
-                    <tr>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Your Query</th>
-                    <th>Whence</th>
+                    <tr style="border: 1px solid black;">
+                    <th style="border: 1px solid black; padding: 10px;">Name</th>
+                    <th style="border: 1px solid black; padding: 10px;">Phone</th>
+                    <th style="border: 1px solid black; padding: 10px;">Email</th>
+                    <th style="border: 1px solid black; padding: 10px;">Your Query</th>
+                    <th style="border: 1px solid black; padding: 10px;">Whence</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    <td>${lastDocument.name}</td>
-                    <td>${lastDocument.phone}</td>
-                    <td>${lastDocument.email}/td>
-                    <td>${lastDocument.your_query}</td>
-                    <td>${lastDocument.whence}</td>
+                    <tr style="border: 1px solid black;">
+                    <td style="border: 1px solid black; padding: 10px;">${lastDocument.name}</td>
+                    <td style="border: 1px solid black; padding: 10px;">${lastDocument.phone}</td>
+                    <td style="border: 1px solid black; padding: 10px;">${lastDocument.email}</td>
+                    <td style="border: 1px solid black; padding: 10px;">${lastDocument.your_query}</td>
+                    <td style="border: 1px solid black; padding: 10px;">${lastDocument.whence}</td>
                     </tr>
                 </tbody>
             </table>`
       };
+      
     
     mailTransporter.sendMail(mailDetails, function(err, data){
         if(err) {
